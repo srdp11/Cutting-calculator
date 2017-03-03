@@ -1,0 +1,11 @@
+c:\users\дарина\documents\visual studio 2012\Projects\cutting calculator\cutting calculator\bin\Debug\cutting calculator.exe.config
+C:\Users\Дарина\documents\visual studio 2012\Projects\cutting calculator\cutting calculator\bin\Debug\cutting calculator.exe
+C:\Users\Дарина\documents\visual studio 2012\Projects\cutting calculator\cutting calculator\bin\Debug\cutting calculator.pdb
+C:\Users\Дарина\documents\visual studio 2012\Projects\cutting calculator\cutting calculator\obj\Debug\cutting calculator.csprojResolveAssemblyReference.cache
+C:\Users\Дарина\documents\visual studio 2012\Projects\cutting calculator\cutting calculator\obj\Debug\cutting_calculator.Form1.resources
+C:\Users\Дарина\documents\visual studio 2012\Projects\cutting calculator\cutting calculator\obj\Debug\cutting_calculator.Properties.Resources.resources
+C:\Users\Дарина\documents\visual studio 2012\Projects\cutting calculator\cutting calculator\obj\Debug\cutting calculator.csproj.GenerateResource.Cache
+C:\Users\Дарина\documents\visual studio 2012\Projects\cutting calculator\cutting calculator\obj\Debug\cutting calculator.exe
+C:\Users\Дарина\documents\visual studio 2012\Projects\cutting calculator\cutting calculator\obj\Debug\cutting calculator.pdb
+C:\Users\Дарина\Documents\Visual Studio 2012\Projects\cutting calculator\cutting calculator\bin\Debug\MySql.Data.dll
+C:\Users\Дарина\Documents\Visual Studio 2012\Projects\cutting calculator\cutting calculator\obj\Debug\cutting_calculator.Form2.resources
