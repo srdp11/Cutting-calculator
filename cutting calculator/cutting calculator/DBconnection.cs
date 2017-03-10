@@ -12,7 +12,7 @@ namespace cutting_calculator
 {
     class DBconnection
     {
-        private static MySqlConnection connection;
+        private MySqlConnection connection;
         private string server;
         private string database;
         private string uid;
@@ -22,6 +22,15 @@ namespace cutting_calculator
         public DBconnection()
         {
             Initialize();
+        }
+
+        public DBconnection(DBconnection conn)
+        {
+            this.connection = conn.connection;
+            this.server = conn.server;
+            this.database = conn.database;
+            this.uid = conn.uid;
+            this.password = conn.password;
         }
 
         //Initialize values

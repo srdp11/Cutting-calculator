@@ -99,8 +99,8 @@
             // 
             this.close.Name = "close";
             this.close.Size = new System.Drawing.Size(168, 22);
-            this.close.Text = "Закрыть ";
-            this.close.Click += new System.EventHandler(this.close_Click);
+            this.close.Text = "Закрыть";
+            this.close.Click += new System.EventHandler(this.close_Click_1);
             // 
             // addPossition
             // 
@@ -216,13 +216,14 @@
             // 
             this.orderDataGrid.AllowUserToAddRows = false;
             this.orderDataGrid.AllowUserToDeleteRows = false;
-            this.orderDataGrid.AllowUserToOrderColumns = true;
             this.orderDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.orderDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.orderDataGrid.Location = new System.Drawing.Point(15, 142);
             this.orderDataGrid.Name = "orderDataGrid";
+            this.orderDataGrid.ReadOnly = true;
             this.orderDataGrid.Size = new System.Drawing.Size(349, 310);
             this.orderDataGrid.TabIndex = 12;
+            this.orderDataGrid.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.orderDataGrid_CellContentClick);
             // 
             // Form1
             // 
@@ -261,7 +262,6 @@
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem programToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem calculateCutting;
-        private System.Windows.Forms.ToolStripMenuItem close;
         private System.Windows.Forms.Button addPossition;
         private System.Windows.Forms.Button Save;
         private System.Windows.Forms.TableLayoutPanel positionsLayoutPanel;
@@ -273,6 +273,7 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button deletePosition;
         private System.Windows.Forms.ComboBox partNumbersCmbx;
+        private System.Windows.Forms.ToolStripMenuItem close;
     }
 }
 
