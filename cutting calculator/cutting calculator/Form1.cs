@@ -14,22 +14,21 @@ namespace cutting_calculator
 {
     public partial class Form1 : Form
     {
-        int id = 1;
         DataTable order;
         string OrderName;
         DateTime OrderDate;
         bool isOrderSaved;
         bool isConncectionOpened;
         DBconnection conn = new DBconnection();
+        int currId = 1;
         List<bool> isEnough = new List<bool>();
-        List<int> quantity = new List<int>();
 
         public Form1()
         {
             InitializeComponent();
            
             isConncectionOpened = conn.OpenConnection();
-            string stm = "SELECT name FROM samtecs";
+            string stm = "SELECT name FROM samtecs where name like '%-1%'";
             MySqlDataAdapter da = new MySqlDataAdapter(stm, conn.getMySqlConnection());
             DataSet ds = new DataSet();
 
@@ -50,6 +49,11 @@ namespace cutting_calculator
 
         private void Form1_Load(Object sender, EventArgs e)
         {
+            this.orderDataGridView.DataError +=
+                new DataGridViewDataErrorEventHandler(orderDataGrid_DataError);
+            this.orderDataGridView.CellValueChanged += new DataGridViewCellEventHandler(orderDataGridView_CellValueChanged);
+            this.orderDataGridView.ColumnAdded += new DataGridViewColumnEventHandler(orderDataGridView_ColumnAdded);
+
             order = new DataTable();
 
             order.Columns.Add("ID", typeof(uint));
@@ -61,13 +65,12 @@ namespace cutting_calculator
             order.Columns[1].AllowDBNull = false;
             order.Columns[2].AllowDBNull = false;
 
-            orderDataGrid.DataSource = order;
-            orderDataGrid.Columns[0].ReadOnly = true;
-            orderDataGrid.Columns[1].ReadOnly = true;
-            orderDataGrid.Columns[2].ReadOnly = false;
+            order.Columns[1].Unique = true;
 
-            this.orderDataGrid.DataError +=
-                new DataGridViewDataErrorEventHandler(orderDataGrid_DataError);
+            orderDataGridView.DataSource = order;
+            orderDataGridView.Columns[0].ReadOnly = true;
+            orderDataGridView.Columns[1].ReadOnly = true;
+            orderDataGridView.Columns[2].ReadOnly = false;
         }
 
         public DataTable getTable()
@@ -80,55 +83,84 @@ namespace cutting_calculator
             MessageBox.Show("Ошибка!\nПроверьте корректность данных!");
         }
 
+        private void setCellCollor(int mode, int rowIdx)
+        {
+            if (mode == 1)
+            {
+                orderDataGridView.Rows[rowIdx].Cells[2].Style.BackColor = Color.LawnGreen;
+            }
+            else if (mode == 2)
+            {
+                orderDataGridView.Rows[rowIdx].Cells[2].Style.BackColor = Color.Yellow;
+            }
+            else if (mode == -1)
+            {
+                orderDataGridView.Rows[rowIdx].Cells[2].Style.BackColor = Color.OrangeRed;
+            }
+        }
+
+        public int checkQuantity(int rowIdx)
+        {
+            int avalible = 0;
+            int residue = 0;
+            int expectation = 0;
+            int orderQuantity = 0;
+            int reserve = 0;
+            int mode;
+
+
+            DataSet ds = new DataSet();
+            DataTable dt = new DataTable();
+            DataTable cutting = new DataTable();
+
+            MySqlCommand cmd = conn.getMySqlConnection().CreateCommand();
+            MySqlDataAdapter da = new MySqlDataAdapter();
+
+            cmd.CommandText = "SELECT avalible, residue, expectation, reserve FROM samtecs where name = @Name";
+            cmd.Parameters.AddWithValue("@Name", order.Rows[rowIdx][1]);
+
+            cmd.Prepare();
+
+            da.SelectCommand = cmd;
+
+            da.Fill(ds, "samtecs");
+            dt = ds.Tables["samtecs"];
+
+            avalible = Int32.Parse(dt.Rows[0][0].ToString());
+            residue = Int32.Parse(dt.Rows[0][1].ToString());
+            expectation = Int32.Parse(dt.Rows[0][2].ToString());
+            reserve = Int32.Parse(dt.Rows[0][3].ToString());
+            orderQuantity = Int32.Parse(order.Rows[order.Rows.Count - 1][2].ToString());
+
+            if (residue - reserve >= orderQuantity)
+            {
+                mode = 1;
+            }
+            else 
+            {
+                if ((expectation > 0) && (avalible >= orderQuantity))
+                    mode = 2;
+                else
+                    mode = -1;
+            }
+            
+            setCellCollor(mode, rowIdx);
+
+            return mode;
+        }
 
         private void addPossition_Click(object sender, EventArgs e)
         {
             try
             {
-                order.Rows.Add(id, partNumbersCmbx.SelectedValue.ToString(), Int32.Parse(quantityTextBox.Text.ToString()));
-                bool isQuantityEnough = false;
-                int avalibleQuantity = 0;
-                
-                DataSet ds = new DataSet();
-                DataTable dt = new DataTable();
-                DataTable cutting = new DataTable();
+                order.Rows.Add(currId, partNumbersCmbx.SelectedValue.ToString(), Int32.Parse(quantityTextBox.Text.ToString()));
+                int quantityCheckResult = checkQuantity(order.Rows.Count - 1);
 
-                MySqlCommand cmd = conn.getMySqlConnection().CreateCommand();
-                MySqlDataAdapter da = new MySqlDataAdapter();
-
-                cmd.CommandText = "SELECT avalible FROM samtecs where name = @Name";
-                cmd.Parameters.AddWithValue("@Name", order.Rows[id - 1].ItemArray[1].ToString());
-
-                cmd.Prepare();
-
-                da.SelectCommand = cmd;
-
-                da.Fill(ds, "samtecs");
-                dt = ds.Tables["samtecs"];
-
-                avalibleQuantity = Int32.Parse(dt.Rows[0][0].ToString());
-                
-                quantity.Add(avalibleQuantity);
-
-                if (avalibleQuantity >= Int32.Parse(order.Rows[id - 1][2].ToString()))
-                {
-                    isQuantityEnough = true;
-                    isEnough.Add(isQuantityEnough);
-                }
+                if (quantityCheckResult != -1)
+                    isEnough.Add(true);
                 else
-                {
-                    isEnough.Add(isQuantityEnough);
-                }
-
-                if (isQuantityEnough)
-                {
-                   orderDataGrid.Rows[id - 1].Cells[2].Style.BackColor = Color.MediumSpringGreen;
-                }
-                else
-                {
-                    orderDataGrid.Rows[id - 1].Cells[2].Style.BackColor = Color.Tomato;
-                }
-                id++;
+                    isEnough.Add(false);
+                currId++;
             }
             catch (Exception exp)
             {
@@ -137,6 +169,14 @@ namespace cutting_calculator
             quantityTextBox.Text = "";
         }
 
+        private void resetId()
+        {
+            for (int i = 0; i < order.Rows.Count; i++)
+            {
+                order.Rows[i][0] = i + 1;
+            }
+            currId = order.Rows.Count + 1;
+        }
 
         private void Save_Click(object sender, EventArgs e)
         {
@@ -162,11 +202,11 @@ namespace cutting_calculator
 
         private void deletePosition_Click(object sender, EventArgs e)
         {
-            if (orderDataGrid.CurrentRow != null)
+            foreach (DataGridViewRow currentRow in orderDataGridView.SelectedRows)
             {
-                int deletedNum = orderDataGrid.CurrentRow.Index;
-                orderDataGrid.Rows.Remove(orderDataGrid.CurrentRow);
-            }  
+                order.Rows[currentRow.Index].Delete();
+            }
+            resetId();
         }
 
         private void calculateCutting_Click(object sender, EventArgs e)
@@ -175,46 +215,80 @@ namespace cutting_calculator
             {
                 DataSet ds = new DataSet();
                 DataTable dt = new DataTable();
+                DataTable dt1 = new DataTable();
+
                 List<int> tempQuantity = new List<int>();
                 DataTable cutting = new DataTable();
 
-                var parameters = new string[order.Rows.Count];
+                int cuttingQty = 0;
+
+                foreach(bool isEnoughQty in isEnough)
+                {
+                    if(!isEnoughQty)
+                        cuttingQty++;
+                }
+
+                var parameters = new string[cuttingQty];
                 MySqlCommand cmd = conn.getMySqlConnection().CreateCommand();
                 MySqlDataAdapter da = new MySqlDataAdapter();
+                
+                int j = 0;
+                try
+                {
+                  for (int i = 0; i < isEnough.Count; i++)
+                  {
+                    if (!isEnough[i])
+                    {
+                        parameters[j] = string.Format("@Name{0}", j);
+                        cmd.Parameters.AddWithValue(parameters[j], order.Rows[i].ItemArray[1].ToString());
+                        j++;
+                   }
+                }
+                    cmd.CommandText = string.Format("SELECT article as 'id', name, residue, reserve, expectation, avalible, minbalance  FROM samtecs where name in ({0})", string.Join(",", parameters));
+
+                    da.SelectCommand = cmd;
+                    da.Fill(ds, "samtecs");
+                    dt = ds.Tables["samtecs"];
+
+                    ds.Clear();
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message.ToString());
+                }
                
-                for (int i = 0; i < order.Rows.Count; i++)
-                {
-                    parameters[i] = string.Format("@Name{0}", i);
-                    cmd.Parameters.AddWithValue(parameters[i], order.Rows[i].ItemArray[1].ToString());
-                }
-
-                cmd.CommandText = string.Format("SELECT article as 'id', name, residue, reserve, expectation, avalible, minbalance  FROM samtecs where name in ({0})", string.Join(", ", parameters));
-              
-                da.SelectCommand = cmd;
-                da.Fill(ds, "samtecs");
-                dt = ds.Tables["samtecs"];
-
-                for (int i = 0; i < order.Rows.Count; i++)
-                {
-                    
-                }
-
                 Form2 childForm2 = new Form2(dt);
-                childForm2.Owner = this;
                 childForm2.ShowDialog();
             }
             else
             {
-                MessageBox.Show("Заказ не сохранен!");
+                MessageBox.Show("Заявка не сохранена!");
             }
         }
 
-        private void partNumbersCmbx_SelectedIndexChanged(object sender, EventArgs e)
+        private void orderDataGridView_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
-
+            if (orderDataGridView.Columns[e.ColumnIndex].Name == "Quantity")
+            {
+                int quantityCheckResult = checkQuantity(e.RowIndex);
+                if (quantityCheckResult == -1)
+                    isEnough[e.RowIndex] = false;
+            }
         }
 
-        private void close_Click_1(object sender, EventArgs e)
+        private void orderDataGridView_ColumnAdded(object sender, DataGridViewColumnEventArgs e)
+        {
+            orderDataGridView.Columns[e.Column.Index].SortMode = DataGridViewColumnSortMode.NotSortable;
+        }
+
+
+        private void partNumbersCmbx_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void close_Click(object sender, EventArgs e)
         {
             conn.CloseConnection();
             this.Close();

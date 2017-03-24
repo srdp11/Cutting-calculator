@@ -19,8 +19,7 @@ namespace cutting_calculator
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Form1 parentForm = new Form1();
-            Application.Run(parentForm);
+            Application.Run(new Form1());
         }
     }
 }

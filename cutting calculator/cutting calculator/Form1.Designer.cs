@@ -45,10 +45,10 @@
             this.partNumbersCmbx = new System.Windows.Forms.ComboBox();
             this.dataLabel = new System.Windows.Forms.Label();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
-            this.orderDataGrid = new System.Windows.Forms.DataGridView();
+            this.orderDataGridView = new System.Windows.Forms.DataGridView();
             this.menuStrip1.SuspendLayout();
             this.positionsLayoutPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.orderDataGrid)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.orderDataGridView)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -100,7 +100,7 @@
             this.close.Name = "close";
             this.close.Size = new System.Drawing.Size(168, 22);
             this.close.Text = "Закрыть";
-            this.close.Click += new System.EventHandler(this.close_Click_1);
+            this.close.Click += new System.EventHandler(this.close_Click);
             // 
             // addPossition
             // 
@@ -212,25 +212,24 @@
             this.dateTimePicker1.Size = new System.Drawing.Size(200, 20);
             this.dateTimePicker1.TabIndex = 11;
             // 
-            // orderDataGrid
+            // orderDataGridView
             // 
-            this.orderDataGrid.AllowUserToAddRows = false;
-            this.orderDataGrid.AllowUserToDeleteRows = false;
-            this.orderDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.orderDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.orderDataGrid.Location = new System.Drawing.Point(15, 142);
-            this.orderDataGrid.Name = "orderDataGrid";
-            this.orderDataGrid.ReadOnly = true;
-            this.orderDataGrid.Size = new System.Drawing.Size(349, 310);
-            this.orderDataGrid.TabIndex = 12;
-            this.orderDataGrid.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.orderDataGrid_CellContentClick);
+            this.orderDataGridView.AllowUserToAddRows = false;
+            this.orderDataGridView.AllowUserToDeleteRows = false;
+            this.orderDataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.orderDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.orderDataGridView.Location = new System.Drawing.Point(15, 142);
+            this.orderDataGridView.Name = "orderDataGridView";
+            this.orderDataGridView.Size = new System.Drawing.Size(349, 310);
+            this.orderDataGridView.TabIndex = 12;
+            this.orderDataGridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.orderDataGrid_CellContentClick);
             // 
             // Form1
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(383, 497);
-            this.Controls.Add(this.orderDataGrid);
+            this.Controls.Add(this.orderDataGridView);
             this.Controls.Add(this.dateTimePicker1);
             this.Controls.Add(this.dataLabel);
             this.Controls.Add(this.Save);
@@ -249,7 +248,7 @@
             this.menuStrip1.PerformLayout();
             this.positionsLayoutPanel.ResumeLayout(false);
             this.positionsLayoutPanel.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.orderDataGrid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.orderDataGridView)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -269,7 +268,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label dataLabel;
         private System.Windows.Forms.DateTimePicker dateTimePicker1;
-        private System.Windows.Forms.DataGridView orderDataGrid;
+        private System.Windows.Forms.DataGridView orderDataGridView;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button deletePosition;
         private System.Windows.Forms.ComboBox partNumbersCmbx;

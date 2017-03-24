@@ -22,11 +22,17 @@ namespace cutting_calculator
             InitializeComponent();
             dt = table.Copy();
             cuttingDataGrid.DataSource = dt;
+            cuttingDataGrid.ReadOnly = true;
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void Form2_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

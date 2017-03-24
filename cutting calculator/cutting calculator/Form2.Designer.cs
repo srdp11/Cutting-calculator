@@ -34,6 +34,7 @@
             this.programToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cuttingCmbx = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.cuttingDataGrid)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -43,9 +44,9 @@
             this.cuttingDataGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.cuttingDataGrid.Location = new System.Drawing.Point(12, 27);
+            this.cuttingDataGrid.Location = new System.Drawing.Point(12, 54);
             this.cuttingDataGrid.Name = "cuttingDataGrid";
-            this.cuttingDataGrid.Size = new System.Drawing.Size(581, 396);
+            this.cuttingDataGrid.Size = new System.Drawing.Size(581, 379);
             this.cuttingDataGrid.TabIndex = 0;
             // 
             // menuStrip1
@@ -80,17 +81,28 @@
             this.exitToolStripMenuItem.Text = "Выход";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
+            // cuttingCmbx
+            // 
+            this.cuttingCmbx.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cuttingCmbx.FormattingEnabled = true;
+            this.cuttingCmbx.Location = new System.Drawing.Point(12, 27);
+            this.cuttingCmbx.Name = "cuttingCmbx";
+            this.cuttingCmbx.Size = new System.Drawing.Size(153, 21);
+            this.cuttingCmbx.TabIndex = 2;
+            // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(605, 445);
+            this.Controls.Add(this.cuttingCmbx);
             this.Controls.Add(this.cuttingDataGrid);
             this.Controls.Add(this.menuStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form2";
             this.Text = "Оптимальная резка";
+            this.Load += new System.EventHandler(this.Form2_Load);
             ((System.ComponentModel.ISupportInitialize)(this.cuttingDataGrid)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
@@ -106,5 +118,6 @@
         private System.Windows.Forms.ToolStripMenuItem programToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exportToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
+        private System.Windows.Forms.ComboBox cuttingCmbx;
     }
 }
