@@ -34,5 +34,10 @@ namespace cutting_calculator
         {
 
         }
+
+        private void cuttingDataGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
     }
 }

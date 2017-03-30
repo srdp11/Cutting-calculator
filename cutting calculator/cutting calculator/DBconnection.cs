@@ -37,9 +37,9 @@ namespace cutting_calculator
         private void Initialize()
         {
             server = "localhost";
-            database = "samtec";
+            database = "samtecs";
             uid = "root";
-            password = "";
+            password = "12345678";
             string connectionString;
             connectionString = "SERVER=" + server + ";" + "DATABASE=" +
             database + ";" + "UID=" + uid + ";" + "PASSWORD=" + password + ";";
